@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Notice List</h1>
+
+<form class="form-inline my-2 my-lg-0">
+    <input
+      class="form-control mr-sm-2"
+      type="search"
+      placeholder="Search"
+      aria-label="Search"
+      name="search_query"
+      value="{{ request.GET.si }}"
+    />
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+      Search
+    </button>
+  </form>
+
+<!-- Ye variable khud day ga ListView notice_list, model name or list ka word -->
+<h1>Notices</h1>
+{% for notice in notice_list %}
+<p> <a href='/college/notice/{{notice.id}}'>{{notice.subject}}</a></p>
+{% endfor %}
+{% endblock content %}
+
+<!-- /college/notice/{{notice.id}}  == {% url 'notice-detail' notice.id %} -->

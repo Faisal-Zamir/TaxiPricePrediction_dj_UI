@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Question Detail</h1>
+
+
+<h4>{{question.subject}}</h4>
+
+<p>{{question.msg}} asked by: <span style="text-decoration: underline; color:darkorchid;">{{question.user}}</span></p>
+
+
+<h3><a href='{% url 'home' %}' class ="btn btn-primary" >Back</a></h3>
+{% endblock content %}

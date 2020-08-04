@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h3>Welcome to Mini Website about College Notices and Questions management</h3>
+
+<h1>Notices</h1>
+{% for notice in notices %}
+<p> <a href='/college/notice/{{notice.id}}'>{{notice.subject}}</a></p>
+{% endfor %}
+
+<h1>Questions</h1>
+{% for question in questions %}
+
+<p> <a href='/college/question/{{question.id}}'>{{question.subject}}</a></p>
+
+{% endfor %}
+
+{% endblock content %}
