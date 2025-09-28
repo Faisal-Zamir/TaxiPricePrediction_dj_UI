@@ -62,11 +62,54 @@
         }
         
         .performance-card {
-            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            background: white;
+            border-radius: 10px;
             color: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            height: auto%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin: 20px 0;
+            max-width: 500px;
+            height: auto;
+
+        }
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .metric-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        .model-tabs {
+            display: flex;
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 15px;
+        }
+        .model-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-weight: 500;
+            color: #6c757d;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .model-tab.active {
+            color: #0d6efd;
+            border-bottom: 3px solid #0d6efd;
+            font-weight: 600;
+        }
+        .model-content {
+            display: none;
+        }
+        .model-content.active {
+            display: block;
+        }
+        .model-icon {
+            font-size: 1.2rem;
+            margin-right: 8px;
         }
         
         .footer {
@@ -77,7 +120,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            margin-top:15rem;
+            margin-top:18rem;
         }
         
         .btn-predict {
@@ -211,107 +254,74 @@
                             <i class="bi bi-map"></i> Interactive map would appear here in a real application
                         </div>
                         
-                        <form id="predictionForm">
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Trip Distance</label>
-                                    <div class="input-group">
-                                        <input type="number" class="form-control" id="trip_distance" placeholder="Distance" min="0" step="0.1">
-                                        <span class="input-group-text">km</span>
-                                    </div>
+                     <form id="predictionForm" method="post">
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">{{ form.Passenger_Count.label }}</label>
+                                    {{ form.Passenger_Count }}
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Trip Duration</label>
-                                    <div class="input-group">
-                                        <input type="number" class="form-control" id="trip_duration" placeholder="Duration" min="0">
-                                        <span class="input-group-text">minutes</span>
-                                    </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">{{ form.Trip_Duration_Minutes.label }}</label>
+                                    {{ form.Trip_Duration_Minutes }}
                                 </div>
                             </div>
                             
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Time of Day</label>
-                                    <select class="form-select" id="time_of_day">
-                                        <option value="morning">Morning (6AM - 12PM)</option>
-                                        <option value="afternoon">Afternoon (12PM - 6PM)</option>
-                                        <option value="evening">Evening (6PM - 12AM)</option>
-                                        <option value="night">Night (12AM - 6AM)</option>
-                                    </select>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">{{ form.Trip_Distance_km.label }}</label>
+                                    {{ form.Trip_Distance_km }}
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Day of Week</label>
-                                    <select class="form-select" id="day_of_week">
-                                        <option value="weekday">Weekday (Mon - Fri)</option>
-                                        <option value="weekend">Weekend (Sat - Sun)</option>
-                                    </select>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">{{ form.Base_Fare.label }}</label>
+                                    {{ form.Base_Fare }}
                                 </div>
                             </div>
                             
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Passenger Count</label>
-                                    <select class="form-select" id="passenger_count">
-                                        <option value="1">1 Passenger</option>
-                                        <option value="2">2 Passengers</option>
-                                        <option value="3">3 Passengers</option>
-                                        <option value="4">4 Passengers</option>
-                                        <option value="5">5+ Passengers</option>
-                                    </select>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">{{ form.Per_Km_Rate.label }}</label>
+                                    {{ form.Per_Km_Rate }}
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Traffic Conditions</label>
-                                    <select class="form-select" id="traffic_conditions">
-                                        <option value="light">Light Traffic</option>
-                                        <option value="moderate">Moderate Traffic</option>
-                                        <option value="heavy">Heavy Traffic</option>
-                                        <option value="severe">Severe Traffic</option>
-                                    </select>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">{{ form.Per_Minute_Rate.label }}</label>
+                                    {{ form.Per_Minute_Rate }}
                                 </div>
                             </div>
                             
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Weather Conditions</label>
-                                    <select class="form-select" id="weather">
-                                        <option value="clear">Clear</option>
-                                        <option value="rainy">Rainy</option>
-                                        <option value="snowy">Snowy</option>
-                                        <option value="foggy">Foggy</option>
-                                    </select>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">{{ form.Time_Of_Day.label }}</label>
+                                    {{ form.Time_Of_Day }}
+                                    <small class="form-text text-muted">Selected time = 1, others = 0</small>
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Base Fare</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">$</span>
-                                        <input type="number" class="form-control" id="base_fare" value="3.00" step="0.01" readonly>
-                                    </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">{{ form.Day_Type.label }}</label>
+                                    {{ form.Day_Type }}
+                                    <small class="form-text text-muted">Weekend = 1, Weekday = 0</small>
                                 </div>
                             </div>
                             
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Per Km Rate</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">$</span>
-                                        <input type="number" class="form-control" id="per_km_rate" value="1.50" step="0.01" readonly>
-                                    </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">{{ form.Traffic_Conditions.label }}</label>
+                                    {{ form.Traffic_Conditions }}
+                                    <small class="form-text text-muted">Low=1, Medium=2, High=3</small>
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Per Minute Rate</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">$</span>
-                                        <input type="number" class="form-control" id="per_minute_rate" value="0.30" step="0.01" readonly>
-                                    </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">{{ form.Weather_Condition.label }}</label>
+                                    {{ form.Weather_Condition }}
+                                    <small class="form-text text-muted">Selected condition = 1, others = 0</small>
                                 </div>
                             </div>
                             
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-predict btn-lg">
-                                    <i class="bi bi-calculator"></i> Predict Fare
-                                </button>
-                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                Prepare Data for ML Model
+                            </button>
                         </form>
+
+
                     </div>
                 </div>
                 
@@ -320,7 +330,11 @@
                     <!-- Result Card -->
                     <div class="result-container text-center">
                         <h3 class="section-title"><i class="bi bi-cash-coin"></i> Fare Estimate</h3>
-                        <div class="price-display">$24.50</div>
+                        <!-- <div class="price-display">$24.50</div> -->
+                        <div id="average">
+                        <div class="metric-value price-display">$?</div>
+                        </div>
+
                         <p class="text-muted">Estimated taxi fare for your trip</p>
                         
                         <ul class="nav nav-pills model-tabs justify-content-center mb-3" id="modelTab" role="tablist">
@@ -336,11 +350,11 @@
                             <div class="tab-pane fade show active" id="linear" role="tabpanel">
                                 <div class="row text-center">
                                     <div class="col-6 mb-3">
-                                        <div class="metric-value" style="color: var(--accent-color);">$24.50</div>
+                                        <div class="metric-value" style="color: var(--accent-color);">$?</div>
                                         <div>Predicted Fare</div>
                                     </div>
-                                    <div class="col-6 mb-3">
-                                        <div class="metric-value">94.2%</div>
+                                    <div class="col-6 mb-3" id="linear_accuracy">
+                                        <div class="metric-value">?%</div>
                                         <div>Accuracy</div>
                                     </div>
                                 </div>
@@ -348,11 +362,11 @@
                             <div class="tab-pane fade" id="poly" role="tabpanel">
                                 <div class="row text-center">
                                     <div class="col-6 mb-3">
-                                        <div class="metric-value" style="color: var(--accent-color);">$25.30</div>
+                                        <div class="metric-value" style="color: var(--accent-color);">$?</div>
                                         <div>Predicted Fare</div>
                                     </div>
-                                    <div class="col-6 mb-3">
-                                        <div class="metric-value">96.7%</div>
+                                    <div id="poly_accuracy" class="col-6 mb-3">
+                                        <div class="metric-value">?%</div>
                                         <div>Accuracy</div>
                                     </div>
                                 </div>
@@ -365,27 +379,66 @@
                     </div>
                     
                     <!-- Performance Card -->
-                    <div class="performance-card">
-                        <h4 class="mb-3"><i class="bi bi-graph-up"></i> Model Performance</h4>
-                        <div class="row text-center">
-                            <div class="col-6 mb-3">
-                                <div class="metric-value">94.2%</div>
-                                <div>Linear Accuracy</div>
-                            </div>
-                            <div class="col-6 mb-3">
-                                <div class="metric-value">96.7%</div>
-                                <div>Poly Accuracy</div>
-                            </div>
-                            <div class="col-6">
-                                <div class="metric-value">$1.20</div>
-                                <div>Avg. Error</div>
-                            </div>
-                            <div class="col-6">
-                                <div class="metric-value">0.93</div>
-                                <div>R² Score</div>
-                            </div>
-                        </div>
-                    </div>
+                        <div class="performance-card">
+                                    <h4 class="mb-3"><i class="bi bi-graph-up"></i> Model Performance</h4>
+                                    
+                                    <!-- Tab Navigation -->
+                                    <div class="model-tabs">
+                                        <button class="model-tab active" data-model="linear">
+                                            <i class="bi bi-graph-up model-icon"></i>Linear Model
+                                        </button>
+                                        <button class="model-tab" data-model="polynomial">
+                                            <i class="bi bi-graph-up-arrow model-icon"></i>Polynomial Model
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Linear Model Content -->
+                                    <div class="model-content active" id="linear-content">
+                                        <div class="row text-center">
+                                            <div class="col-6 mb-3">
+                                                <div class="metric-value">{{linear_metrics.MSE}}</div>
+                                                <div class="metric-label">MSE</div>
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <div class="metric-value">{{linear_metrics.R2}}</div>
+                                                <div class="metric-label">R² Score</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="metric-value">{{linear_metrics.MAE}}</div>
+                                                <div class="metric-label">MAE</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="metric-value">{{linear_metrics.RMSE}}</div>
+                                                <div class="metric-label">RMSE</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Polynomial Model Content -->
+                                    <div class="model-content" id="polynomial-content">
+                                        <div class="row text-center">
+                                            <div class="col-6 mb-3">
+                                                <div class="metric-value">{{poly_metrics.MSE}}</div>
+                                                <div class="metric-label">MSE</div>
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <div class="metric-value">{{poly_metrics.R2}}</div>
+                                                <div class="metric-label">R² Score</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="metric-value">{{poly_metrics.MAE}}</div>
+                                                <div class="metric-label">MSE</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="metric-value">{{poly_metrics.RMSE}}</div>
+                                                <div class="metric-label">RMSE</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
                 </div>
             </div>
         </div>
@@ -399,63 +452,65 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Form validation and interaction
-        document.getElementById('predictionForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // In a real application, you would send the form data to your Django backend
-            // and update the result section with the prediction
-            
-            // For demonstration purposes, we'll simulate fare calculation
-            const distance = parseFloat(document.getElementById('trip_distance').value) || 10;
-            const duration = parseFloat(document.getElementById('trip_duration').value) || 20;
-            const baseFare = 3.00;
-            const kmRate = 1.50;
-            const minuteRate = 0.30;
-            
-            // Calculate fare based on inputs
-            let fare = baseFare + (distance * kmRate) + (duration * minuteRate);
-            
-            // Apply multipliers based on conditions
-            const traffic = document.getElementById('traffic_conditions').value;
-            if (traffic === 'heavy') fare *= 1.2;
-            if (traffic === 'severe') fare *= 1.4;
-            
-            const timeOfDay = document.getElementById('time_of_day').value;
-            if (timeOfDay === 'night') fare *= 1.15;
-            
-            const weather = document.getElementById('weather').value;
-            if (weather === 'rainy' || weather === 'snowy') fare *= 1.1;
-            
-            // Round to 2 decimal places
-            fare = Math.round(fare * 100) / 100;
-            
-            // Update fare displays
-            document.querySelectorAll('.metric-value')[0].textContent = '$' + fare.toFixed(2);
-            document.querySelectorAll('.metric-value')[1].textContent = '$' + (fare * 1.03).toFixed(2);
-            document.querySelector('.price-display').textContent = '$' + fare.toFixed(2);
-        });
-        
-        // Update fare when distance or duration changes
-        document.getElementById('trip_distance').addEventListener('input', updateFareEstimate);
-        document.getElementById('trip_duration').addEventListener('input', updateFareEstimate);
-        
-        function updateFareEstimate() {
-            const distance = parseFloat(document.getElementById('trip_distance').value) || 0;
-            const duration = parseFloat(document.getElementById('trip_duration').value) || 0;
-            
-            if (distance > 0 && duration > 0) {
-                const baseFare = 3.00;
-                const kmRate = 1.50;
-                const minuteRate = 0.30;
-                
-                let fare = baseFare + (distance * kmRate) + (duration * minuteRate);
-                fare = Math.round(fare * 100) / 100;
-                
-                document.querySelector('.price-display').textContent = '$' + fare.toFixed(2);
-            }
+  <script>
+document.getElementById("predictionForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    fetch("{% url 'homepage' %}", {
+        method: "POST",
+        body: formData,
+        headers: {
+            "X-CSRFToken": formData.get("csrfmiddlewaretoken"),
+            "X-Requested-With": "XMLHttpRequest"
         }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Update linear prediction price
+        const linearPriceElement = document.querySelector("#linear .metric-value");
+        linearPriceElement.textContent = `$${data.linear_prediction.toFixed(2)}`;
+        
+        // Update linear accuracy
+        const linearAccElement = document.querySelector("#linear_accuracy .metric-value");
+        linearAccElement.textContent = `${data.linear_R2_accuracy.toFixed(2)}%`;
+        
+        // Update average prediction price
+        const averagePriceElement = document.querySelector("#average .metric-value");
+        averagePriceElement.textContent = `$${data.average_prediction.toFixed(2)}`;
+
+        // Update poly prediction price
+        const polyPriceElement = document.querySelector("#poly .metric-value");
+        polyPriceElement.textContent = `$${data.poly_prediction.toFixed(2)}`;
+    
+        // Update poly accuracy
+        const polyAccElement = document.querySelector("#poly_accuracy .metric-value");
+        polyAccElement.textContent = `${data.poly_R2_accuracy.toFixed(2)}%`;
+    })
+    .catch(error => console.error("Error:", error));
+});
+</script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.model-tab');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs and content
+                    document.querySelectorAll('.model-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.model-content').forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    const model = this.getAttribute('data-model');
+                    document.getElementById(`${model}-content`).classList.add('active');
+                });
+            });
+        });
     </script>
 </body>
 </html>
