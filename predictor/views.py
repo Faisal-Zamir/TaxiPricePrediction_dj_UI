@@ -1,5 +1,4 @@
 from multiprocessing import context
-from turtle import pd
 from django.shortcuts import render
 from predictor.ML_Files.taxi_price_Prediction import get_model_performance, predict_taxi_price
 from predictor.forms import FarePredictionForm
