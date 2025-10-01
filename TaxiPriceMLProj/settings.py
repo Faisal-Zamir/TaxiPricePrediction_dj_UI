@@ -3,7 +3,14 @@ import dj_database_url
 import os
 from pathlib import Path
 
+os.environ['MPLBACKEND'] = 'Agg'
 
+# If using matplotlib anywhere
+try:
+    import matplotlib
+    matplotlib.use('Agg')
+except ImportError:
+    pass
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
