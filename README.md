@@ -53,7 +53,7 @@ https://www.kaggle.com/code/pyfaisalzamir/taxi-price-predictions-with-linear-pol
 ## Model
 
 - **Algorithm:** Linear Regression & Polynomial Regression
-- **R2:** 83% and 93&  
+- **R2:** 83% and 93%  
 
 ---
 
@@ -62,11 +62,11 @@ https://www.kaggle.com/code/pyfaisalzamir/taxi-price-predictions-with-linear-pol
 For example:  
 
 - **Home Page:** Screenshot of the form where users input student data.
-- ![Home Page](Screenshot_908.png)
+  ![Home Page](Screenshot_908.png)
 - **Metrics (bottom area):** Screenshot showing the predicted results and metrics.
-- ![Metrics](Screenshot_909.png)
+  ![Metrics](Screenshot_909.png)
 - **Model Metrics (bottom area):** Screenshot showing the predicted results and metrics.
-- ![Model Metrics](Screenshot_910.png)
+  ![Model Metrics](Screenshot_910.png)
 
 
 **Contributing**
